@@ -32,3 +32,12 @@ a {
 #linksManage {
 	display:none;
 }
+
+.center {
+	float:center;
+	margin:auto;
+}
+
+#searchBox {
+	height:30px;
+}

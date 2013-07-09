@@ -2,16 +2,27 @@
 //password checking
 // include("inc/login/password_protect.php");
 
+INCLUDE "sensitive.php";
+
+
 if (isset($_GET['linkURL'])){
   include "php/addLink.php";
-  echo "<script type='text/javascript'>var linksAction = 'linksAdd'; var linkObject = new Object(); linkObject.URL = '$linkURL'; linkObject.Title = '$linkTitle';</script>";  
+  echo "<script type='text/javascript'>
+    var linksAction = 'linksAdd'; 
+    var linkObject = new Object(); 
+    linkObject.URL = '$linkURL'; 
+    linkObject.Title = '$linkTitle';
+    </script>";  
 }
 
 elseif (isset($_GET['purge'])){
   exec("curl -v 'http://localhost:8983/solr/linkPad/update/?commit=true' -H 'Content-Type: text/xml' -d '<delete><query>*:*</query></delete>'");
-  echo "<script type='text/javascript'>var linksAction = 'linksPurge';</script>";
+  echo "<script type='text/javascript'>
+    var linksAction = 'linksPurge';
+    </script>";
   // echo "<span class='text-error'>All links purged.</span>";
 }
+
 else{
   echo "<script type='text/javascript'>var linksAction = 'linksShow';</script>";
 }
@@ -97,12 +108,35 @@ else{
         
           <div class="row-fluid">
 
-            <div id="linksShow">
-              <h2 class="text-info">Your Links:</h2>              
-              <ul id="links"></ul>                           
+            <div id="linksShow" class="span8 offset2">              
+              <h2 class="text-center">Me Links</h2>
+              <form class="form-search text-center" onSubmit="searchLinks(); return false;">
+                <input id="searchBox" type="text" class="input-medium search-query input-xxlarge">
+                <button type="submit" class="btn">Search</button>
+              </form> 
+              <div class="results">          
+                <ul id="links"></ul>
+                <p>
+                  <a href="#" onClick="paginate('all'); return false;">first</a>
+                  <span>/</span>
+                  <a href="#" onClick="paginate('prev'); return false;">prev</a>
+                  <span>/</span>
+                  <a href="#" onClick="paginate('next'); return false;">next</a>
+                  <span>/</span>
+                  <a href="#" onClick="paginate('last'); return false;">last</a>
+                </p>
+              </div>
+
             </div>
 
-             <div id="linksManage"></div>             
+            <!--
+            <div id="linksDelete" class="span5">
+              <h2 class="text-info">Deleted Links:</h2>              
+              <ul id="links"></ul>                           
+            </div>
+            -->
+
+             <div id="linksManage" class="span8 offset2"></div>             
 
           </div> <!--closes topView row -->                           
         
